@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "WYTargetVC.h"
+#import "WYOneVC.h"
 
 @interface ViewController () <UINavigationControllerDelegate>
 
@@ -17,14 +19,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.navigationController.delegate = self;
 }
 
 
 - (IBAction)nextBtnClick {
-    UIViewController *targetVC = [UIViewController new];
+    UIViewController *targetVC = [WYTargetVC new];
     targetVC.view.backgroundColor = [UIColor orangeColor];
     [self.navigationController pushViewController:targetVC animated:YES];
+}
+
+- (IBAction)hasNavBtnClick:(UIButton *)sender {
+    [self.navigationController pushViewController:[WYOneVC new] animated:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate

@@ -7,8 +7,11 @@
 //
 
 #import "WYNavigationController.h"
+#import "ViewController.h"
+#import "WYTargetVC.h"
 
-@interface WYNavigationController ()
+
+@interface WYNavigationController ()<UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 
 @end
 
@@ -16,7 +19,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.delegate = self;
+    
+    id target = self.interactivePopGestureRecognizer.delegate;
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:target action:@selector(handleNavigationTransition:)];
+    [self.view addGestureRecognizer:pan];
+    self.interactivePopGestureRecognizer.enabled = NO;
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
@@ -26,4 +35,14 @@
     }
     [super pushViewController:viewController animated:animated];
 }
+
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    BOOL isHideNav = ([viewController isKindOfClass:[ViewController class]] || [viewController isKindOfClass:[WYTargetVC class]]);
+    
+    NSLog(@"isHide = %d", isHideNav);
+    [self setNavigationBarHidden:isHideNav animated:YES];
+}
+
 @end
